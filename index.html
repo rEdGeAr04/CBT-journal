@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thought Record Journal · CBT</title>
+  <title>Thought Record Journal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
       --cream:       #fdf8f0;
@@ -19,7 +19,6 @@
       --rose:        #b85c5c;
       --rose-light:  rgba(184,92,92,0.12);
       --slate:       #5a6a80;
-      --gold:        #c89a2e;
       --text:        #1a1614;
       --text-mid:    #5a5048;
       --text-muted:  #9c8f84;
@@ -28,7 +27,7 @@
       --shadow-sm:   0 2px 8px rgba(40,24,8,0.07);
       --shadow-md:   0 4px 20px rgba(40,24,8,0.10);
       --shadow-lg:   0 8px 40px rgba(40,24,8,0.14);
-      --r:           10px;
+      --r: 10px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,118 +41,138 @@
       line-height: 1.6;
       background-image:
         radial-gradient(ellipse at 15% 60%, rgba(191,124,52,0.06) 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 20%, rgba(44,74,57,0.05) 0%, transparent 50%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+        radial-gradient(ellipse at 85% 20%, rgba(44,74,57,0.05) 0%, transparent 50%);
     }
 
-    /* ── Header ── */
-    .site-header {
+    /* LOCK SCREEN */
+    .lock-overlay {
+      position: fixed; inset: 0; z-index: 9999;
       background: var(--green);
-      color: var(--cream);
-      padding: 0 40px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 200;
-      box-shadow: var(--shadow-lg);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(191,124,52,0.15) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 10%, rgba(255,255,255,0.04) 0%, transparent 50%);
+    }
+    .lock-overlay.hidden { display: none; }
+    .lock-box {
+      background: var(--white); border-radius: 18px;
+      padding: 40px 36px; width: 100%; max-width: 360px;
+      box-shadow: var(--shadow-lg); text-align: center;
+    }
+    .lock-icon { font-size: 2.4rem; margin-bottom: 6px; }
+    .lock-title {
+      font-family: 'Playfair Display', serif; font-size: 1.5rem;
+      font-weight: 600; color: var(--green); margin-bottom: 6px;
+    }
+    .lock-subtitle {
+      font-size: 0.82rem; color: var(--text-muted);
+      font-style: italic; margin-bottom: 28px; line-height: 1.5;
+    }
+    .lock-input {
+      width: 100%; font-family: 'Lora', serif; font-size: 1rem;
+      padding: 13px 16px; border: 1.5px solid var(--border);
+      border-radius: var(--r); outline: none; text-align: center;
+      letter-spacing: 0.15em; color: var(--text); background: var(--cream);
+      margin-bottom: 10px;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .lock-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(44,74,57,0.10); }
+    .lock-input.shake { animation: shake 0.35s ease; border-color: var(--rose) !important; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-8px); }
+      40%     { transform: translateX(8px); }
+      60%     { transform: translateX(-5px); }
+      80%     { transform: translateX(5px); }
+    }
+    .lock-error { font-size: 0.78rem; color: var(--rose); font-style: italic; margin-bottom: 12px; min-height: 18px; }
+    .btn-lock-submit {
+      width: 100%; padding: 13px; background: var(--green); color: white;
+      border: none; border-radius: var(--r);
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600;
+      cursor: pointer; letter-spacing: 0.02em; transition: all 0.2s; margin-bottom: 18px;
+    }
+    .btn-lock-submit:hover { background: var(--green-mid); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(44,74,57,0.25); }
+    .lock-reset-link {
+      font-size: 0.75rem; color: var(--text-muted); cursor: pointer;
+      text-decoration: underline; text-underline-offset: 2px;
+      background: none; border: none; font-family: 'Lora', serif; font-style: italic;
+    }
+    .lock-reset-link:hover { color: var(--rose); }
+
+    /* HEADER */
+    .site-header {
+      background: var(--green); color: var(--cream);
+      padding: 0 40px; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow-lg);
     }
     .logo { display: flex; align-items: baseline; gap: 14px; }
     .logo-mark { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; }
     .logo-sub  { font-size: 0.75rem; opacity: 0.55; font-style: italic; letter-spacing: 0.05em; }
+    .header-right { display: flex; align-items: center; gap: 20px; }
     .header-stats { display: flex; gap: 32px; }
     .hstat { text-align: center; line-height: 1.2; }
     .hstat-n { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 600; }
     .hstat-l { font-size: 0.68rem; opacity: 0.55; text-transform: uppercase; letter-spacing: 0.09em; }
-
-    /* ── Layout ── */
-    .app-layout {
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      min-height: calc(100vh - 72px);
-      align-items: start;
+    .btn-lock-header {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      color: var(--cream); border-radius: 8px; padding: 7px 13px;
+      font-size: 0.8rem; cursor: pointer; font-family: 'Lora', serif;
+      transition: all 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap;
     }
+    .btn-lock-header:hover { background: rgba(255,255,255,0.22); }
 
-    /* ── Form Panel ── */
+    /* LAYOUT */
+    .app-layout { display: grid; grid-template-columns: 1fr 400px; min-height: calc(100vh - 72px); align-items: start; }
+
+    /* FORM */
     .form-panel { padding: 44px 48px; border-right: 1.5px solid var(--border); }
-
     .panel-heading { margin-bottom: 32px; }
     .panel-heading h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 600; color: var(--green); }
     .panel-heading p  { margin-top: 7px; font-size: 0.87rem; color: var(--text-muted); font-style: italic; }
 
-    /* editing mode banner */
     .edit-banner {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(191,124,52,0.12);
-      border: 1.5px solid var(--amber);
-      border-radius: var(--r);
-      padding: 10px 16px;
-      margin-bottom: 20px;
-      font-size: 0.85rem;
-      color: var(--amber);
-      font-style: italic;
+      display: none; align-items: center; justify-content: space-between;
+      background: rgba(191,124,52,0.12); border: 1.5px solid var(--amber);
+      border-radius: var(--r); padding: 10px 16px; margin-bottom: 20px;
+      font-size: 0.85rem; color: var(--amber); font-style: italic;
     }
     .edit-banner.show { display: flex; }
     .btn-cancel-edit {
-      font-size: 0.78rem;
-      font-family: 'Lora', serif;
-      background: transparent;
-      border: 1px solid var(--amber);
-      color: var(--amber);
-      border-radius: 5px;
-      padding: 4px 10px;
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-      margin-left: 12px;
+      font-size: 0.78rem; font-family: 'Lora', serif;
+      background: transparent; border: 1px solid var(--amber); color: var(--amber);
+      border-radius: 5px; padding: 4px 10px; cursor: pointer; transition: all 0.15s; margin-left: 12px;
     }
     .btn-cancel-edit:hover { background: var(--amber); color: white; }
 
     .meta-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; margin-bottom: 28px; }
 
-    /* inputs */
     .inp-label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-muted); margin-bottom: 7px; }
+
     input[type="text"], input[type="date"], textarea, select {
-      width: 100%;
-      font-family: 'Lora', Georgia, serif;
-      font-size: 0.91rem;
-      color: var(--text);
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--r);
-      padding: 11px 14px;
-      outline: none;
-      transition: border-color 0.18s, box-shadow 0.18s;
-      resize: vertical;
-      line-height: 1.6;
+      width: 100%; font-family: 'Lora', Georgia, serif; font-size: 0.91rem;
+      color: var(--text); background: var(--white); border: 1.5px solid var(--border);
+      border-radius: var(--r); padding: 11px 14px; outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s; resize: vertical; line-height: 1.6;
     }
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(44,74,57,0.10);
-    }
+    input:focus, textarea:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(44,74,57,0.10); }
     input[readonly] { background: var(--cream-dark); color: var(--text-muted); cursor: default; font-style: italic; }
     textarea { min-height: 88px; }
     textarea.short { min-height: 68px; }
     select {
       cursor: pointer; appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a5048' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 38px;
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px;
     }
 
-    /* ── Fields ── */
     .field { margin-bottom: 24px; }
     .field-title { display: flex; align-items: center; gap: 11px; margin-bottom: 5px; }
     .step-badge {
       width: 26px; height: 26px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 700; color: white; flex-shrink: 0;
-      font-family: 'Lora', serif;
+      font-size: 0.72rem; font-weight: 700; color: white; flex-shrink: 0; font-family: 'Lora', serif;
     }
     .sb-green     { background: var(--green); }
     .sb-amber     { background: var(--amber); }
@@ -164,54 +183,26 @@
     .field-title span { font-family: 'Playfair Display', serif; font-size: 0.98rem; font-weight: 600; color: var(--text); }
     .field-hint { font-size: 0.78rem; color: var(--text-muted); font-style: italic; margin-left: 37px; margin-bottom: 9px; }
 
-    /* ── Chip Groups ── */
-    .chip-group-label {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      margin-top: 4px;
-    }
+    .chip-group-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-muted); margin-bottom: 6px; margin-top: 4px; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
-
     .emo-chip {
-      padding: 4px 13px;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      font-family: 'Lora', serif;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--text-mid);
-      cursor: pointer;
-      transition: all 0.15s;
-      user-select: none;
+      padding: 4px 13px; border-radius: 20px; font-size: 0.78rem;
+      font-family: 'Lora', serif; border: 1.5px solid var(--border);
+      background: transparent; color: var(--text-mid); cursor: pointer;
+      transition: all 0.15s; user-select: none;
     }
-    /* difficult emotions */
     .emo-chip.neg:hover  { border-color: #b07060; color: #b07060; }
     .emo-chip.neg.active { background: #b07060; border-color: #b07060; color: white; }
-    /* positive emotions */
     .emo-chip.pos:hover  { border-color: var(--green-mid); color: var(--green-mid); }
     .emo-chip.pos.active { background: var(--green-mid); border-color: var(--green-mid); color: white; }
 
-    .distortion-hint {
-      font-size: 0.77rem; color: var(--text-muted); font-style: italic;
-      margin-top: 7px; min-height: 18px; line-height: 1.5;
-    }
-
-    .form-divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--border), transparent);
-      margin: 28px 0;
-    }
+    .distortion-hint { font-size: 0.77rem; color: var(--text-muted); font-style: italic; margin-top: 7px; min-height: 18px; line-height: 1.5; }
+    .form-divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 28px 0; }
 
     .btn-save {
-      width: 100%; padding: 15px;
-      background: var(--green); color: white;
-      border: none; border-radius: var(--r);
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem; font-weight: 600;
-      cursor: pointer; letter-spacing: 0.03em;
+      width: 100%; padding: 15px; background: var(--green); color: white;
+      border: none; border-radius: var(--r); font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 600; cursor: pointer; letter-spacing: 0.03em;
       transition: all 0.2s; margin-top: 6px;
     }
     .btn-save:hover { background: var(--green-mid); box-shadow: 0 6px 24px rgba(44,74,57,0.25); transform: translateY(-1px); }
@@ -223,14 +214,10 @@
     .field-err.show { display: block; }
     textarea.invalid { border-color: var(--rose) !important; }
 
-    /* ── History Panel ── */
+    /* HISTORY */
     .history-panel {
-      background: var(--cream-mid);
-      padding: 32px 28px;
-      overflow-y: auto;
-      max-height: calc(100vh - 72px);
-      position: sticky;
-      top: 72px;
+      background: var(--cream-mid); padding: 32px 28px;
+      overflow-y: auto; max-height: calc(100vh - 72px); position: sticky; top: 72px;
     }
     .history-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
     .history-top h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--green); font-style: italic; }
@@ -241,7 +228,7 @@
     }
     .btn-export:hover { background: var(--green); color: white; }
 
-    /* ── Entry Cards ── */
+    /* ENTRY CARDS */
     .entry-card {
       background: var(--white); border-radius: var(--r); margin-bottom: 14px;
       box-shadow: var(--shadow-sm); overflow: hidden;
@@ -253,13 +240,11 @@
 
     .card-top {
       padding: 13px 15px; display: flex; align-items: center; gap: 11px;
-      cursor: pointer; user-select: none;
-      border-bottom: 1px solid transparent; transition: border-color 0.15s;
+      cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: border-color 0.15s;
     }
     .card-top.open { border-color: var(--border); }
     .card-num {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--green); color: white;
+      width: 28px; height: 28px; border-radius: 50%; background: var(--green); color: white;
       font-family: 'Playfair Display', serif; font-size: 0.82rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
@@ -268,10 +253,8 @@
     .card-date { font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; }
     .card-badge {
       font-size: 0.68rem; padding: 3px 8px; border-radius: 4px;
-      background: var(--rose-light); color: var(--rose);
-      border: 1px solid rgba(184,92,92,0.2);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      max-width: 90px; flex-shrink: 0;
+      background: var(--rose-light); color: var(--rose); border: 1px solid rgba(184,92,92,0.2);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; flex-shrink: 0;
     }
     .card-arrow { font-size: 0.68rem; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s; }
     .card-arrow.up { transform: rotate(180deg); }
@@ -291,50 +274,70 @@
       padding: 9px 12px; border-radius: 0 6px 6px 0;
       font-size: 0.87rem; line-height: 1.65; font-style: italic; color: var(--text);
     }
-
-    .card-footer {
-      display: flex; justify-content: flex-end; gap: 8px;
-      padding-top: 13px; margin-top: 13px; border-top: 1px solid var(--border);
-    }
+    .card-footer { display: flex; justify-content: flex-end; gap: 8px; padding-top: 13px; margin-top: 13px; border-top: 1px solid var(--border); }
     .btn-edit {
-      font-size: 0.75rem; color: var(--green-mid);
-      background: transparent; border: 1px solid rgba(74,120,96,0.35);
-      border-radius: 5px; padding: 5px 11px; cursor: pointer;
-      font-family: 'Lora', serif; transition: all 0.15s;
+      font-size: 0.75rem; color: var(--green-mid); background: transparent;
+      border: 1px solid rgba(74,120,96,0.35); border-radius: 5px; padding: 5px 11px;
+      cursor: pointer; font-family: 'Lora', serif; transition: all 0.15s;
     }
     .btn-edit:hover { background: var(--green-mid); color: white; border-color: var(--green-mid); }
     .btn-del {
-      font-size: 0.75rem; color: var(--rose);
-      background: transparent; border: 1px solid rgba(184,92,92,0.3);
-      border-radius: 5px; padding: 5px 11px; cursor: pointer;
-      font-family: 'Lora', serif; transition: all 0.15s;
+      font-size: 0.75rem; color: var(--rose); background: transparent;
+      border: 1px solid rgba(184,92,92,0.3); border-radius: 5px; padding: 5px 11px;
+      cursor: pointer; font-family: 'Lora', serif; transition: all 0.15s;
     }
     .btn-del:hover { background: var(--rose); color: white; border-color: var(--rose); }
 
-    /* ── Empty state ── */
     .empty { text-align: center; padding: 52px 16px; color: var(--text-muted); }
     .empty-icon { font-size: 2.2rem; margin-bottom: 14px; opacity: 0.45; }
     .empty p { font-style: italic; font-size: 0.88rem; line-height: 1.7; }
 
-    /* ── Toast ── */
     #toast {
       position: fixed; bottom: 28px; left: 50%;
       transform: translateX(-50%) translateY(70px);
       background: var(--green); color: white;
-      padding: 11px 22px; border-radius: 8px;
-      font-size: 0.88rem; box-shadow: var(--shadow-lg);
-      z-index: 999; pointer-events: none;
+      padding: 11px 22px; border-radius: 8px; font-size: 0.88rem;
+      box-shadow: var(--shadow-lg); z-index: 9998; pointer-events: none;
       transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* RESPONSIVE */
     @media (max-width: 960px) {
       .app-layout { grid-template-columns: 1fr; }
       .form-panel { padding: 28px 22px; }
       .history-panel { position: static; max-height: none; border-top: 1.5px solid var(--border); }
     }
+    @media (max-width: 600px) {
+      .site-header { padding: 10px 16px; height: auto; flex-wrap: nowrap; gap: 8px; }
+      .logo { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .logo-mark { font-size: 1.0rem; }
+      .logo-sub  { display: none; }
+      .header-right { gap: 12px; }
+      .header-stats { gap: 14px; }
+      .hstat-n { font-size: 1.1rem; }
+      .hstat-l { font-size: 0.6rem; }
+      .btn-lock-header .lock-label { display: none; }
+      .btn-lock-header { padding: 7px 10px; }
+      .form-panel { padding: 20px 16px; }
+      .panel-heading h2 { font-size: 1.5rem; }
+      .meta-row { grid-template-columns: 90px 1fr; gap: 10px; }
+      .field-hint { margin-left: 0; font-size: 0.75rem; }
+      .step-badge { width: 22px; height: 22px; font-size: 0.65rem; }
+      .emo-chip { font-size: 0.74rem; padding: 4px 10px; }
+      .chip-group-label { font-size: 0.65rem; }
+      input[type="text"], input[type="date"], textarea, select { font-size: 0.88rem; padding: 10px 12px; }
+      textarea { min-height: 78px; }
+      textarea.short { min-height: 60px; }
+      .btn-save { font-size: 0.95rem; padding: 14px; }
+      .history-panel { padding: 20px 16px; }
+      .card-top { padding: 11px 12px; }
+      .card-body { padding: 12px; }
+      .lock-box { padding: 32px 22px; }
+      .lock-title { font-size: 1.3rem; }
+    }
     @media print {
-      .site-header, .form-panel, .btn-export, .btn-del, .btn-edit, .card-footer { display: none !important; }
+      .lock-overlay, .site-header, .form-panel, .btn-export, .btn-del, .btn-edit, .card-footer { display: none !important; }
       .app-layout { display: block; }
       .history-panel { position: static; overflow: visible; max-height: none; padding: 24px; background: white; }
       .entry-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
@@ -344,67 +347,74 @@
 </head>
 <body>
 
+  <!-- LOCK SCREEN -->
+  <div class="lock-overlay" id="lock-overlay">
+    <div class="lock-box">
+      <div class="lock-icon">&#128274;</div>
+      <div class="lock-title" id="lock-title">Welcome back</div>
+      <div class="lock-subtitle" id="lock-subtitle">Enter your password to open your journal.</div>
+      <input type="password" class="lock-input" id="lock-input"
+        placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"
+        autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') submitLock()" />
+      <div class="lock-error" id="lock-error"></div>
+      <button class="btn-lock-submit" id="lock-btn" onclick="submitLock()">Unlock Journal</button>
+      <button class="lock-reset-link" id="lock-reset" onclick="resetPassword()">Forgot password? Reset everything</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
   <header class="site-header">
     <div class="logo">
-      <span class="logo-mark">✦ Thought Record Journal</span>
+      <span class="logo-mark">&#10022; Thought Record Journal</span>
       <span class="logo-sub">Cognitive Behavioural Therapy</span>
     </div>
-    <div class="header-stats">
-      <div class="hstat"><div class="hstat-n" id="stat-total">0</div><div class="hstat-l">Total</div></div>
-      <div class="hstat"><div class="hstat-n" id="stat-week">0</div><div class="hstat-l">This Week</div></div>
+    <div class="header-right">
+      <div class="header-stats">
+        <div class="hstat"><div class="hstat-n" id="stat-total">0</div><div class="hstat-l">Total</div></div>
+        <div class="hstat"><div class="hstat-n" id="stat-week">0</div><div class="hstat-l">This Week</div></div>
+      </div>
+      <button class="btn-lock-header" onclick="lockApp()">&#128274; <span class="lock-label">Lock</span></button>
     </div>
   </header>
 
   <div class="app-layout">
 
-    <!-- ── Form ── -->
+    <!-- FORM -->
     <div class="form-panel">
-
       <div class="panel-heading">
         <h2 id="form-title">New Entry</h2>
         <p>Take a quiet moment. Describe what happened, notice your thoughts — then gently examine them.</p>
       </div>
 
-      <!-- Edit mode banner -->
       <div class="edit-banner" id="edit-banner">
         <span>Editing an existing entry — make your changes and click Update.</span>
         <button class="btn-cancel-edit" onclick="cancelEdit()">Cancel</button>
       </div>
 
-      <!-- Serial & Date -->
       <div class="meta-row">
-        <div>
-          <label class="inp-label">Entry No.</label>
-          <input type="text" id="f-serial" readonly value="#1" />
-        </div>
-        <div>
-          <label class="inp-label">Date</label>
-          <input type="date" id="f-date" />
-        </div>
+        <div><label class="inp-label">Entry No.</label><input type="text" id="f-serial" readonly value="#1" /></div>
+        <div><label class="inp-label">Date</label><input type="date" id="f-date" /></div>
       </div>
 
-      <!-- 1 · Situation -->
       <div class="field">
         <div class="field-title"><div class="step-badge sb-green">1</div><span>Situation</span></div>
         <div class="field-hint">Where were you? What were you doing? Who else was involved?</div>
-        <textarea id="f-situation" placeholder="Briefly describe the situation…"></textarea>
+        <textarea id="f-situation" placeholder="Briefly describe the situation..."></textarea>
         <div class="field-err" id="err-sit">Please describe the situation before saving.</div>
       </div>
 
-      <!-- 2 · Automatic Thoughts -->
       <div class="field">
         <div class="field-title"><div class="step-badge sb-amber">2</div><span>Automatic Thoughts</span></div>
         <div class="field-hint">What went through your mind? What did you tell yourself?</div>
-        <textarea id="f-thoughts" placeholder="The thoughts that automatically arose…"></textarea>
+        <textarea id="f-thoughts" placeholder="The thoughts that automatically arose..."></textarea>
       </div>
 
-      <!-- 3 · Emotions -->
       <div class="field">
         <div class="field-title"><div class="step-badge sb-rose-warm">3</div><span>Emotions &amp; Feelings</span></div>
         <div class="field-hint">Tap one or more emotions — they fill in automatically. You can also type extra detail.</div>
-
         <div class="chip-group-label">Difficult emotions</div>
-        <div class="chip-row" id="chip-row-neg">
+        <div class="chip-row">
           <button type="button" class="emo-chip neg" data-e="Anxious">Anxious</button>
           <button type="button" class="emo-chip neg" data-e="Sad">Sad</button>
           <button type="button" class="emo-chip neg" data-e="Angry">Angry</button>
@@ -430,9 +440,8 @@
           <button type="button" class="emo-chip neg" data-e="Rejected">Rejected</button>
           <button type="button" class="emo-chip neg" data-e="Disappointed">Disappointed</button>
         </div>
-
         <div class="chip-group-label">Positive emotions</div>
-        <div class="chip-row" id="chip-row-pos">
+        <div class="chip-row">
           <button type="button" class="emo-chip pos" data-e="Happy">Happy</button>
           <button type="button" class="emo-chip pos" data-e="Hopeful">Hopeful</button>
           <button type="button" class="emo-chip pos" data-e="Grateful">Grateful</button>
@@ -446,25 +455,22 @@
           <button type="button" class="emo-chip pos" data-e="Energised">Energised</button>
           <button type="button" class="emo-chip pos" data-e="Motivated">Motivated</button>
         </div>
-
-        <textarea id="f-feelings" class="short" placeholder="Tap emotions above, or type your own…"></textarea>
+        <textarea id="f-feelings" class="short" placeholder="Tap emotions above, or type your own..."></textarea>
       </div>
 
-      <!-- 4 · Behaviour -->
       <div class="field">
         <div class="field-title"><div class="step-badge sb-slate">4</div><span>Behaviour</span></div>
         <div class="field-hint">What did you do? How did you respond or react?</div>
-        <textarea id="f-behavior" class="short" placeholder="Describe your behaviour or actions…"></textarea>
+        <textarea id="f-behavior" class="short" placeholder="Describe your behaviour or actions..."></textarea>
       </div>
 
       <div class="form-divider"></div>
 
-      <!-- 5 · Cognitive Distortion -->
       <div class="field">
         <div class="field-title"><div class="step-badge sb-rose">5</div><span>Cognitive Distortion</span></div>
         <div class="field-hint">Which thinking pattern does this thought reflect?</div>
         <select id="f-distortion">
-          <option value="">— Select a distortion —</option>
+          <option value="">-- Select a distortion --</option>
           <option value="All-or-Nothing Thinking">All-or-Nothing Thinking</option>
           <option value="Overgeneralization">Overgeneralization</option>
           <option value="Mental Filter">Mental Filter</option>
@@ -484,17 +490,16 @@
         <div class="distortion-hint" id="dist-hint"></div>
       </div>
 
-      <!-- 6 · Cognitive Restructuring -->
       <div class="field">
         <div class="field-title"><div class="step-badge sb-teal">6</div><span>Cognitive Restructuring</span></div>
         <div class="field-hint">Challenge the distorted thought. What is a more balanced, realistic perspective?</div>
-        <textarea id="f-restructuring" placeholder="A more balanced way of viewing this situation…"></textarea>
+        <textarea id="f-restructuring" placeholder="A more balanced way of viewing this situation..."></textarea>
       </div>
 
-      <button class="btn-save" id="btn-save" onclick="saveEntry()">Save Entry  ✦</button>
+      <button class="btn-save" id="btn-save" onclick="saveEntry()">Save Entry &#10022;</button>
     </div>
 
-    <!-- ── History ── -->
+    <!-- HISTORY -->
     <div class="history-panel">
       <div class="history-top">
         <h3>Past Entries</h3>
@@ -502,65 +507,158 @@
       </div>
       <div id="entries-list"></div>
     </div>
-
   </div>
 
-  <div id="toast">Saved ✦</div>
+  <div id="toast"></div>
 
   <script>
-    const DIST_DESC = {
-      "All-or-Nothing Thinking":   "Seeing things in black-and-white extremes — perfect or a total failure, no middle ground.",
-      "Overgeneralization":        "Drawing sweeping negative conclusions from a single event (e.g. 'This always happens to me').",
-      "Mental Filter":             "Zeroing in on one negative detail while filtering out the broader positive picture.",
-      "Disqualifying the Positive":"Dismissing positive experiences as flukes — saying they don't count.",
-      "Mind Reading":              "Assuming you know what others are thinking, usually something negative, without evidence.",
-      "Fortune Telling":           "Predicting a negative outcome as though it were already certain fact.",
-      "Catastrophizing":           "Magnifying the importance of a problem — imagining the very worst possible outcome.",
-      "Minimization":              "Shrinking the significance of positives, achievements, or your own strengths.",
-      "Emotional Reasoning":       "Using emotion as proof of truth — feeling bad means it must be bad.",
-      "Should Statements":         "Rigid internal rules about how you or others must behave (e.g. 'I should never fail').",
-      "Labeling":                  "Attaching a global negative label to yourself or another (e.g. 'I am a failure').",
-      "Personalization":           "Taking excessive blame for events outside your control, or assuming everything is about you.",
-      "Blaming":                   "Holding others entirely responsible for your emotional pain, without owning your role.",
-      "Fallacy of Fairness":       "Constant resentment when life or people don't conform to your personal sense of fairness.",
-      "Always Being Right":        "Feeling compelled to prove that your opinions or actions are always correct."
+    // NOTE: All string values in DIST_DESC use only single-quotes internally
+    // to avoid breaking the surrounding double-quoted JS strings.
+    var DIST_DESC = {
+      'All-or-Nothing Thinking':    'Seeing things in black-and-white extremes — perfect or total failure, no middle ground.',
+      'Overgeneralization':         'Drawing sweeping conclusions from a single event, e.g. this always happens to me.',
+      'Mental Filter':              'Zeroing in on one negative detail while filtering out the broader positive picture.',
+      'Disqualifying the Positive': 'Dismissing positive experiences as flukes — saying they simply do not count.',
+      'Mind Reading':               'Assuming you know what others are thinking, usually something negative, without evidence.',
+      'Fortune Telling':            'Predicting a negative outcome as though it were already certain fact.',
+      'Catastrophizing':            'Magnifying the importance of a problem — imagining the very worst possible outcome.',
+      'Minimization':               'Shrinking the significance of positives, achievements, or your own strengths.',
+      'Emotional Reasoning':        'Using emotion as proof of truth — feeling bad about something means it must be bad.',
+      'Should Statements':          'Rigid internal rules about how you or others must behave, e.g. I should never fail.',
+      'Labeling':                   'Attaching a sweeping negative label to yourself or another, e.g. I am a failure.',
+      'Personalization':            'Taking excessive blame for events outside your control, or assuming everything is about you.',
+      'Blaming':                    'Holding others entirely responsible for your emotional pain without owning your own role.',
+      'Fallacy of Fairness':        'Constant resentment when life or people do not conform to your personal sense of fairness.',
+      'Always Being Right':         'Feeling compelled to prove that your opinions or actions are always correct.'
     };
 
-    // ── State ──
-    let entries    = JSON.parse(localStorage.getItem('cbt-thought-records') || '[]');
-    let editingId  = null;   // null = new entry; number = editing existing
+    // STATE
+    var entries   = JSON.parse(localStorage.getItem('cbt-thought-records') || '[]');
+    var editingId = null;
 
-    // ── Init ──
-    document.getElementById('f-date').value = todayISO();
-    updateSerial();
-    renderAll();
-    updateStats();
+    // LOCK
+    var LOCK_KEY      = 'cbt-pwd-hash';
+    var AUTO_LOCK_MS  = 10 * 60 * 1000;
+    var lockTimer     = null;
+    var isSettingPwd  = false;
 
-    // ── Chips ──
-    document.querySelectorAll('.emo-chip').forEach(chip => {
-      chip.addEventListener('click', function () {
+    async function sha256(str) {
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+    }
+
+    function initLock() {
+      var hasPwd = !!localStorage.getItem(LOCK_KEY);
+      if (!hasPwd) {
+        isSettingPwd = true;
+        document.getElementById('lock-title').textContent    = 'Set a password';
+        document.getElementById('lock-subtitle').textContent = 'Choose a password to protect your journal entries.';
+        document.getElementById('lock-btn').textContent      = 'Set Password';
+        document.getElementById('lock-reset').style.display  = 'none';
+      }
+      document.getElementById('lock-overlay').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('lock-input').focus(); }, 100);
+    }
+
+    async function submitLock() {
+      var input = document.getElementById('lock-input');
+      var pwd   = input.value;
+      if (!pwd || pwd.length < 4) { showLockError('Please enter at least 4 characters.'); return; }
+      if (isSettingPwd) {
+        localStorage.setItem(LOCK_KEY, await sha256(pwd));
+        unlockApp();
+        toast('Password set. Journal unlocked.');
+      } else {
+        var hash = await sha256(pwd);
+        if (hash === localStorage.getItem(LOCK_KEY)) {
+          unlockApp();
+        } else {
+          showLockError('Incorrect password. Please try again.');
+          input.classList.add('shake');
+          input.value = '';
+          setTimeout(function() { input.classList.remove('shake'); }, 400);
+        }
+      }
+    }
+
+    function unlockApp() {
+      document.getElementById('lock-overlay').classList.add('hidden');
+      document.getElementById('lock-input').value = '';
+      document.getElementById('lock-error').textContent = '';
+      startAutoLockTimer();
+    }
+
+    function lockApp() {
+      clearTimeout(lockTimer);
+      isSettingPwd = false;
+      document.getElementById('lock-title').textContent    = 'Welcome back';
+      document.getElementById('lock-subtitle').textContent = 'Enter your password to open your journal.';
+      document.getElementById('lock-btn').textContent      = 'Unlock Journal';
+      document.getElementById('lock-reset').style.display  = '';
+      document.getElementById('lock-input').value          = '';
+      document.getElementById('lock-error').textContent    = '';
+      document.getElementById('lock-overlay').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('lock-input').focus(); }, 100);
+    }
+
+    function showLockError(msg) { document.getElementById('lock-error').textContent = msg; }
+
+    function resetPassword() {
+      var ok = confirm('Reset password? This will permanently delete ALL your journal entries. This cannot be undone.');
+      if (!ok) return;
+      localStorage.removeItem(LOCK_KEY);
+      localStorage.removeItem('cbt-thought-records');
+      entries = [];
+      renderAll(); updateStats(); updateSerial();
+      isSettingPwd = true;
+      document.getElementById('lock-title').textContent    = 'Set a new password';
+      document.getElementById('lock-subtitle').textContent = 'All entries have been cleared. Choose a new password.';
+      document.getElementById('lock-btn').textContent      = 'Set Password';
+      document.getElementById('lock-reset').style.display  = 'none';
+      document.getElementById('lock-input').value          = '';
+      document.getElementById('lock-error').textContent    = '';
+      document.getElementById('lock-input').focus();
+    }
+
+    function startAutoLockTimer() {
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(lockApp, AUTO_LOCK_MS);
+    }
+
+    function resetAutoLock() {
+      if (!document.getElementById('lock-overlay').classList.contains('hidden')) return;
+      clearTimeout(lockTimer);
+      lockTimer = setTimeout(lockApp, AUTO_LOCK_MS);
+    }
+
+    ['click','keydown','touchstart','scroll'].forEach(function(ev) {
+      document.addEventListener(ev, resetAutoLock, { passive: true });
+    });
+
+    // CHIPS
+    document.querySelectorAll('.emo-chip').forEach(function(chip) {
+      chip.addEventListener('click', function() {
         this.classList.toggle('active');
         syncChipsToTextarea();
       });
     });
 
     function syncChipsToTextarea() {
-      const ta          = document.getElementById('f-feelings');
-      const allChipVals = [...document.querySelectorAll('.emo-chip')].map(c => c.dataset.e);
-      const activeChips = [...document.querySelectorAll('.emo-chip.active')].map(c => c.dataset.e);
-      // keep any manually-typed text that isn't a chip name
-      const extraParts  = ta.value.split(',').map(s => s.trim()).filter(s => s && !allChipVals.includes(s));
-      ta.value = [...activeChips, ...extraParts].join(', ');
+      var ta          = document.getElementById('f-feelings');
+      var allVals     = Array.from(document.querySelectorAll('.emo-chip')).map(function(c) { return c.dataset.e; });
+      var activeVals  = Array.from(document.querySelectorAll('.emo-chip.active')).map(function(c) { return c.dataset.e; });
+      var extra       = ta.value.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s && !allVals.includes(s); });
+      ta.value = activeVals.concat(extra).join(', ');
     }
 
-    // ── Distortion hint ──
-    document.getElementById('f-distortion').addEventListener('change', function () {
+    // DISTORTION HINT
+    document.getElementById('f-distortion').addEventListener('change', function() {
       document.getElementById('dist-hint').textContent = DIST_DESC[this.value] || '';
     });
 
-    // ── Save / Update ──
+    // SAVE / UPDATE
     function saveEntry() {
-      const sit = v('f-situation');
+      var sit = v('f-situation');
       if (!sit) {
         document.getElementById('err-sit').classList.add('show');
         document.getElementById('f-situation').classList.add('invalid');
@@ -571,28 +669,23 @@
       document.getElementById('f-situation').classList.remove('invalid');
 
       if (editingId !== null) {
-        // Update existing entry
-        const idx = entries.findIndex(e => e.id === editingId);
+        var idx = entries.findIndex(function(e) { return e.id === editingId; });
         if (idx !== -1) {
-          entries[idx] = {
-            ...entries[idx],
-            date:          v('f-date') || todayISO(),
-            situation:     sit,
-            thoughts:      v('f-thoughts'),
-            feelings:      v('f-feelings'),
-            behavior:      v('f-behavior'),
-            distortion:    v('f-distortion'),
-            restructuring: v('f-restructuring'),
-          };
+          entries[idx].date          = v('f-date') || todayISO();
+          entries[idx].situation     = sit;
+          entries[idx].thoughts      = v('f-thoughts');
+          entries[idx].feelings      = v('f-feelings');
+          entries[idx].behavior      = v('f-behavior');
+          entries[idx].distortion    = v('f-distortion');
+          entries[idx].restructuring = v('f-restructuring');
         }
         persist();
         cancelEdit();
         renderAll();
         updateStats();
-        toast('Entry updated ✦');
+        toast('Entry updated.');
       } else {
-        // New entry
-        const entry = {
+        var entry = {
           id:            Date.now(),
           serial:        entries.length + 1,
           date:          v('f-date') || todayISO(),
@@ -601,49 +694,42 @@
           feelings:      v('f-feelings'),
           behavior:      v('f-behavior'),
           distortion:    v('f-distortion'),
-          restructuring: v('f-restructuring'),
+          restructuring: v('f-restructuring')
         };
         entries.unshift(entry);
         persist();
         resetForm();
         renderAll();
         updateStats();
-        toast('Entry #' + entry.serial + ' saved  ✦');
+        toast('Entry #' + entry.serial + ' saved.');
       }
     }
 
-    // ── Edit ──
+    // EDIT
     function editEntry(id) {
-      const entry = entries.find(e => e.id === id);
+      var entry = entries.find(function(e) { return e.id === id; });
       if (!entry) return;
-
       editingId = id;
-
-      // Populate form
-      document.getElementById('f-serial').value       = '#' + entry.serial;
-      document.getElementById('f-date').value         = entry.date || todayISO();
-      document.getElementById('f-situation').value    = entry.situation    || '';
-      document.getElementById('f-thoughts').value     = entry.thoughts     || '';
-      document.getElementById('f-feelings').value     = entry.feelings     || '';
-      document.getElementById('f-behavior').value     = entry.behavior     || '';
-      document.getElementById('f-distortion').value   = entry.distortion   || '';
-      document.getElementById('f-restructuring').value = entry.restructuring || '';
+      document.getElementById('f-serial').value        = '#' + entry.serial;
+      document.getElementById('f-date').value          = entry.date || todayISO();
+      document.getElementById('f-situation').value     = entry.situation    || '';
+      document.getElementById('f-thoughts').value      = entry.thoughts     || '';
+      document.getElementById('f-feelings').value      = entry.feelings     || '';
+      document.getElementById('f-behavior').value      = entry.behavior     || '';
+      document.getElementById('f-distortion').value    = entry.distortion   || '';
+      document.getElementById('f-restructuring').value = entry.restructuring|| '';
       document.getElementById('dist-hint').textContent = DIST_DESC[entry.distortion] || '';
 
-      // Sync chips to match feelings
-      const feelParts = (entry.feelings || '').split(',').map(s => s.trim());
-      document.querySelectorAll('.emo-chip').forEach(chip => {
+      var feelParts = (entry.feelings || '').split(',').map(function(s) { return s.trim(); });
+      document.querySelectorAll('.emo-chip').forEach(function(chip) {
         chip.classList.toggle('active', feelParts.includes(chip.dataset.e));
       });
 
-      // UI: show banner, change button
       document.getElementById('edit-banner').classList.add('show');
       document.getElementById('form-title').textContent = 'Edit Entry';
-      const btn = document.getElementById('btn-save');
-      btn.textContent = 'Update Entry  ✦';
+      var btn = document.getElementById('btn-save');
+      btn.textContent = 'Update Entry';
       btn.classList.add('editing');
-
-      // Scroll form into view
       document.querySelector('.form-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -651,79 +737,69 @@
       editingId = null;
       document.getElementById('edit-banner').classList.remove('show');
       document.getElementById('form-title').textContent = 'New Entry';
-      const btn = document.getElementById('btn-save');
-      btn.textContent = 'Save Entry  ✦';
+      var btn = document.getElementById('btn-save');
+      btn.textContent = 'Save Entry';
       btn.classList.remove('editing');
       resetForm();
     }
 
     function resetForm() {
-      ['f-situation','f-thoughts','f-feelings','f-behavior','f-restructuring'].forEach(id => {
+      ['f-situation','f-thoughts','f-feelings','f-behavior','f-restructuring'].forEach(function(id) {
         document.getElementById(id).value = '';
       });
-      document.getElementById('f-distortion').value   = '';
+      document.getElementById('f-distortion').value    = '';
       document.getElementById('dist-hint').textContent = '';
-      document.getElementById('f-date').value         = todayISO();
-      document.querySelectorAll('.emo-chip.active').forEach(c => c.classList.remove('active'));
+      document.getElementById('f-date').value          = todayISO();
+      document.querySelectorAll('.emo-chip.active').forEach(function(c) { c.classList.remove('active'); });
       document.getElementById('err-sit').classList.remove('show');
       document.getElementById('f-situation').classList.remove('invalid');
       updateSerial();
     }
 
-    // ── Render ──
+    // RENDER
     function renderAll() {
-      const list = document.getElementById('entries-list');
+      var list = document.getElementById('entries-list');
       if (!entries.length) {
-        list.innerHTML = `<div class="empty">
-          <div class="empty-icon">✦</div>
-          <p>Your entries will appear here.<br>Save your first thought record above.</p>
-        </div>`;
+        list.innerHTML = '<div class="empty"><div class="empty-icon">&#10022;</div><p>Your entries will appear here.<br>Save your first thought record above.</p></div>';
         return;
       }
-      list.innerHTML = entries.map(e => `
-        <div class="entry-card" id="card-${e.id}">
-          <div class="card-top" id="ctop-${e.id}" onclick="toggleCard(${e.id})">
-            <div class="card-num">${e.serial}</div>
-            <div class="card-info">
-              <div class="card-sit">${esc(e.situation)}</div>
-              <div class="card-date">${fmtDate(e.date)}</div>
-            </div>
-            ${e.distortion ? `<div class="card-badge" title="${esc(e.distortion)}">${esc(shortDist(e.distortion))}</div>` : ''}
-            <div class="card-arrow" id="arr-${e.id}">&#9662;</div>
-          </div>
-          <div class="card-body" id="cbody-${e.id}">
-            ${row('Situation', e.situation)}
-            ${row('Automatic Thoughts', e.thoughts)}
-            ${row('Emotions', e.feelings)}
-            ${row('Behaviour', e.behavior)}
-            ${e.distortion ? `<div class="cr">
-              <div class="cr-label">Cognitive Distortion</div>
-              <div class="cr-distortion">${esc(e.distortion)}</div>
-              ${DIST_DESC[e.distortion] ? `<div class="cr-distortion-desc">${esc(DIST_DESC[e.distortion])}</div>` : ''}
-            </div>` : ''}
-            ${e.restructuring ? `<div class="cr">
-              <div class="cr-label">Cognitive Restructuring</div>
-              <div class="cr-restructuring">${esc(e.restructuring)}</div>
-            </div>` : ''}
-            <div class="card-footer">
-              <button class="btn-edit" onclick="editEntry(${e.id})">Edit</button>
-              <button class="btn-del"  onclick="delEntry(${e.id})">Delete</button>
-            </div>
-          </div>
-        </div>
-      `).join('');
+      list.innerHTML = entries.map(function(e) {
+        return '<div class="entry-card" id="card-' + e.id + '">' +
+          '<div class="card-top" id="ctop-' + e.id + '" onclick="toggleCard(' + e.id + ')">' +
+            '<div class="card-num">' + e.serial + '</div>' +
+            '<div class="card-info">' +
+              '<div class="card-sit">' + esc(e.situation) + '</div>' +
+              '<div class="card-date">' + fmtDate(e.date) + '</div>' +
+            '</div>' +
+            (e.distortion ? '<div class="card-badge" title="' + esc(e.distortion) + '">' + esc(shortDist(e.distortion)) + '</div>' : '') +
+            '<div class="card-arrow" id="arr-' + e.id + '">&#9662;</div>' +
+          '</div>' +
+          '<div class="card-body" id="cbody-' + e.id + '">' +
+            row('Situation', e.situation) +
+            row('Automatic Thoughts', e.thoughts) +
+            row('Emotions', e.feelings) +
+            row('Behaviour', e.behavior) +
+            (e.distortion ? '<div class="cr"><div class="cr-label">Cognitive Distortion</div><div class="cr-distortion">' + esc(e.distortion) + '</div>' + (DIST_DESC[e.distortion] ? '<div class="cr-distortion-desc">' + esc(DIST_DESC[e.distortion]) + '</div>' : '') + '</div>' : '') +
+            (e.restructuring ? '<div class="cr"><div class="cr-label">Cognitive Restructuring</div><div class="cr-restructuring">' + esc(e.restructuring) + '</div></div>' : '') +
+            '<div class="card-footer">' +
+              '<button class="btn-edit" onclick="editEntry(' + e.id + ')">Edit</button>' +
+              '<button class="btn-del"  onclick="delEntry(' + e.id + ')">Delete</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
     }
 
     function row(label, val) {
       if (!val) return '';
-      return `<div class="cr"><div class="cr-label">${label}</div><div class="cr-val">${esc(val)}</div></div>`;
+      return '<div class="cr"><div class="cr-label">' + label + '</div><div class="cr-val">' + esc(val) + '</div></div>';
     }
 
     function toggleCard(id) {
-      const body = document.getElementById('cbody-' + id);
-      const top  = document.getElementById('ctop-'  + id);
-      const arr  = document.getElementById('arr-'   + id);
-      const open = body.classList.toggle('visible');
+      var body = document.getElementById('cbody-' + id);
+      var top  = document.getElementById('ctop-'  + id);
+      var arr  = document.getElementById('arr-'   + id);
+      var open = body.classList.toggle('visible');
       top.classList.toggle('open', open);
       arr.classList.toggle('up',   open);
     }
@@ -731,71 +807,87 @@
     function delEntry(id) {
       if (editingId === id) cancelEdit();
       if (!confirm('Permanently delete this entry?')) return;
-      entries = entries.filter(e => e.id !== id);
-      persist();
-      renderAll();
-      updateStats();
-      updateSerial();
+      entries = entries.filter(function(e) { return e.id !== id; });
+      persist(); renderAll(); updateStats(); updateSerial();
     }
 
-    // ── Export ──
+    // EXPORT
     function exportAll() {
       if (!entries.length) { alert('No entries to export yet.'); return; }
-      const text = entries.map(e => [
-        '═══════════════════════════════════════',
-        'Entry #' + e.serial + '  ·  ' + fmtDate(e.date),
-        '═══════════════════════════════════════',
-        e.situation     ? 'SITUATION:\n'              + e.situation     : '',
-        e.thoughts      ? '\nAUTOMATIC THOUGHTS:\n'   + e.thoughts      : '',
-        e.feelings      ? '\nEMOTIONS:\n'             + e.feelings      : '',
-        e.behavior      ? '\nBEHAVIOUR:\n'            + e.behavior      : '',
-        e.distortion    ? '\nCOGNITIVE DISTORTION:\n' + e.distortion    : '',
-        e.restructuring ? '\nCOGNITIVE RESTRUCTURING:\n' + e.restructuring : '',
-      ].filter(Boolean).join('\n')).join('\n\n');
-      const a = document.createElement('a');
+      var text = entries.map(function(e) {
+        return [
+          '=======================================',
+          'Entry #' + e.serial + '  -  ' + fmtDate(e.date),
+          '=======================================',
+          e.situation     ? 'SITUATION:\n'                 + e.situation     : '',
+          e.thoughts      ? '\nAUTOMATIC THOUGHTS:\n'      + e.thoughts      : '',
+          e.feelings      ? '\nEMOTIONS:\n'                + e.feelings      : '',
+          e.behavior      ? '\nBEHAVIOUR:\n'               + e.behavior      : '',
+          e.distortion    ? '\nCOGNITIVE DISTORTION:\n'    + e.distortion    : '',
+          e.restructuring ? '\nCOGNITIVE RESTRUCTURING:\n' + e.restructuring : ''
+        ].filter(Boolean).join('\n');
+      }).join('\n\n');
+      var a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
       a.download = 'thought-record-' + todayISO() + '.txt';
       a.click();
     }
 
-    // ── Helpers ──
-    function v(id)  { return document.getElementById(id).value.trim(); }
+    // HELPERS
+    function v(id) { return document.getElementById(id).value.trim(); }
+
     function esc(s) {
       if (!s) return '';
-      const d = document.createElement('div');
+      var d = document.createElement('div');
       d.textContent = s;
       return d.innerHTML.replace(/\n/g, '<br>');
     }
-    function todayISO()  { return new Date().toISOString().slice(0, 10); }
-    function fmtDate(s)  {
+
+    function todayISO() { return new Date().toISOString().slice(0, 10); }
+
+    function fmtDate(s) {
       if (!s) return '';
-      return new Date(s + 'T12:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+      return new Date(s + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     }
+
     function shortDist(d) {
-      const map = {
-        "All-or-Nothing Thinking":    "All-or-Nothing",
-        "Disqualifying the Positive": "Disqualifying +",
-        "Emotional Reasoning":        "Emotional Rsng.",
-        "Always Being Right":         "Always Right",
-        "Fallacy of Fairness":        "Fairness Fallacy",
+      var map = {
+        'All-or-Nothing Thinking':    'All-or-Nothing',
+        'Disqualifying the Positive': 'Disqualifying +',
+        'Emotional Reasoning':        'Emotional Rsng.',
+        'Always Being Right':         'Always Right',
+        'Fallacy of Fairness':        'Fairness Fallacy'
       };
       return map[d] || d;
     }
+
     function updateSerial() {
       if (editingId === null) document.getElementById('f-serial').value = '#' + (entries.length + 1);
     }
+
     function updateStats() {
       document.getElementById('stat-total').textContent = entries.length;
-      const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
-      document.getElementById('stat-week').textContent = entries.filter(e => new Date(e.date + 'T12:00:00') >= cutoff).length;
+      var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+      document.getElementById('stat-week').textContent = entries.filter(function(e) {
+        return new Date(e.date + 'T12:00:00') >= cutoff;
+      }).length;
     }
+
     function persist() { localStorage.setItem('cbt-thought-records', JSON.stringify(entries)); }
+
     function toast(msg) {
-      const el = document.getElementById('toast');
+      var el = document.getElementById('toast');
       el.textContent = msg;
       el.classList.add('show');
-      setTimeout(() => el.classList.remove('show'), 2600);
+      setTimeout(function() { el.classList.remove('show'); }, 2600);
     }
+
+    // INIT
+    document.getElementById('f-date').value = todayISO();
+    updateSerial();
+    renderAll();
+    updateStats();
+    initLock();
   </script>
 </body>
 </html>
